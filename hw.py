@@ -1,43 +1,77 @@
-n = 4
-
-guess = input("Predict: how many total points for n = 4 laps? ")
-
-points = list(range(1, n + 1))
-total_points = sum(points)
-
-print(f"Your guess: {guess}  Laps list: {points}  Total points: {total_points}")
+import random
+from tkinter import *
 
 
-input("\nPredict: what happens to the step count as n grows? Press Enter")
+def play(user_choice):
+    # Computer chooses randomly
+    comp_choice = random.choice(["Rock", "Paper", "Scissors"])
 
-print("/n" + "=" * 70)
-print(f"{'n':<8}  {'Formula Steps':<16}  {'Single Loop Steps':<20}  {'Nested Loop Steps':<20}")
-print("=" * 70)
+    # Determine winner
+    if user_choice == comp_choice:
+        result = "It's a Tie!"
+    elif (
+        (user_choice == "Rock" and comp_choice == "Scissors")
+        or (user_choice == "Paper" and comp_choice == "Rock")
+        or (user_choice == "Scissors" and comp_choice == "Paper")
+    ):
+        result = "You Win!"
+    else:
+        result = "Computer Wins!"
 
-for size in [4, 10, 100, 1000]:
-    formula_steps = 1
-    
-    single_steps = size
-    
-    nested_steps = size * (size + 1) // 2
-    
-    print(f"n = {size:<5}  {formula_steps:<16}  {single_steps:<20}  {nested_steps:<20}")
-
-print("=" * 70)
+    # Show choices and result in the label
+    result_label.config(
+        text=f"Your choice: {user_choice}\nComputer choice: {comp_choice}\n\n{result}"
+    )
 
 
-def method_formula(n):
-    return n * (n + 1) // 2
+# --- GUI Setup ---
+root = Tk()
+root.title("Rock Paper Scissors")
+root.geometry("350x250")
+root.configure(bg="light blue")
 
-def method_single_loop(n):
-    total = 0
-    for lap in range(1, n + 1):
-        total += lap
-    return total
+# Title
+title_label = Label(
+    root,
+    text="Rock Paper Scissors Game",
+    font=("Helvetica", 14, "bold"),
+    bg="light blue",
+)
+title_label.pack(pady=10)
 
-def method_nested_loop(n):
-    total = 0
-    for lap in range(1, n + 1):
-        for point in range(1, lap + 1):
-            total += 1
-    return total
+# Buttons Frame
+btn_frame = Frame(root, bg="light blue")
+btn_frame.pack(pady=10)
+
+Button(
+    btn_frame,
+    text="Rock",
+    width=8,
+    bg="white",
+    command=lambda: play("Rock"),
+).grid(row=0, column=0, padx=5)
+Button(
+    btn_frame,
+    text="Paper",
+    width=8,
+    bg="white",
+    command=lambda: play("Paper"),
+).grid(row=0, column=1, padx=5)
+Button(
+    btn_frame,
+    text="Scissors",
+    width=8,
+    bg="white",
+    command=lambda: play("Scissors"),
+).grid(row=0, column=2, padx=5)
+
+# Result Output
+result_label = Label(
+    root,
+    text="Click any button to play!",
+    font=("Helvetica", 11),
+    bg="light blue",
+)
+result_label.pack(pady=15)
+
+root.mainloop()
