@@ -1,77 +1,36 @@
-import random
-from tkinter import *
+quiz_scores = [45, 78, 92, 60, 85, 99, 73, 50]
+
+print("Original Quiz Scores:", quiz_scores)
+print("-" * 45)
+
+def get_score_by_index(scores, index):
+    return scores[index]
 
 
-def play(user_choice):
-    # Computer chooses randomly
-    comp_choice = random.choice(["Rock", "Paper", "Scissors"])
-
-    # Determine winner
-    if user_choice == comp_choice:
-        result = "It's a Tie!"
-    elif (
-        (user_choice == "Rock" and comp_choice == "Scissors")
-        or (user_choice == "Paper" and comp_choice == "Rock")
-        or (user_choice == "Scissors" and comp_choice == "Paper")
-    ):
-        result = "You Win!"
-    else:
-        result = "Computer Wins!"
-
-    # Show choices and result in the label
-    result_label.config(
-        text=f"Your choice: {user_choice}\nComputer choice: {comp_choice}\n\n{result}"
-    )
+print("\n1. Direct Access O(1):")
+print(f"Score at index 2 is: {get_score_by_index(quiz_scores, 2)}")
 
 
-# --- GUI Setup ---
-root = Tk()
-root.title("Rock Paper Scissors")
-root.geometry("350x250")
-root.configure(bg="light blue")
+def search_score(scores, target):
+    steps = 0
+    for i in range(len(scores)):
+        steps += 1
+        if scores[i] == target:
+            return f"Found {target}! Total steps taken: {steps}"
+    return f"{target} not found. Total steps: {steps}"
 
-# Title
-title_label = Label(
-    root,
-    text="Rock Paper Scissors Game",
-    font=("Helvetica", 14, "bold"),
-    bg="light blue",
-)
-title_label.pack(pady=10)
 
-# Buttons Frame
-btn_frame = Frame(root, bg="light blue")
-btn_frame.pack(pady=10)
+print("\n2. Linear Search O(N):")
+print(search_score(quiz_scores, 85)) 
 
-Button(
-    btn_frame,
-    text="Rock",
-    width=8,
-    bg="white",
-    command=lambda: play("Rock"),
-).grid(row=0, column=0, padx=5)
-Button(
-    btn_frame,
-    text="Paper",
-    width=8,
-    bg="white",
-    command=lambda: play("Paper"),
-).grid(row=0, column=1, padx=5)
-Button(
-    btn_frame,
-    text="Scissors",
-    width=8,
-    bg="white",
-    command=lambda: play("Scissors"),
-).grid(row=0, column=2, padx=5)
 
-# Result Output
-result_label = Label(
-    root,
-    text="Click any button to play!",
-    font=("Helvetica", 11),
-    bg="light blue",
-)
-result_label.pack(pady=15)
+def compare_all_pairs(scores):
+    steps = 0
+    for i in range(len(scores)):
+        for j in range(len(scores)):
+            steps += 1
+    return f"Total comparisons made for {len(scores)} students: {steps}"
 
-root.mainloop()
+
+print("\n3. Pair Comparison O(N^2):")
+print(compare_all_pairs(quiz_scores))
